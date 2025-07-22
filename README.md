@@ -10,7 +10,6 @@ This template provides a minimal setup to get React working in Vite with HMR and
 - react-router-dom (ruteo)
 - react-hook-form + zod (formularios y validación)
 - Font Awesome (iconografía)
-.
 
 ## Estructura de Carpetas (LIFT + Atomic Design)
 ```
