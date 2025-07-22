@@ -59,6 +59,29 @@ git push -u origin main develop
 - Pull Requests deben ser revisados antes de mergear a `develop` o `main`.
 - Mantener actualizado este README a medida que evoluciona el Frontend.
 
+## 🛠️ Desarrollo y estructura
+
+### Usuarios de prueba y roles
+
+El sistema de autenticación mock soporta los siguientes usuarios de prueba, cada uno con un rol representativo del sistema:
+
+| Email                       | Contraseña      | Rol                  | Descripción                        |
+|-----------------------------|-----------------|----------------------|-------------------------------------|
+| admin@hogar360.com          | admin123        | admin                | Administrador general               |
+| comprador@hogar360.com      | comprador123    | comprador            | Usuario comprador                   |
+| vendedor@hogar360.com       | vendedor123     | vendedor             | Usuario vendedor                    |
+
+**Nota:** El registro de usuarios no está implementado (fuera del alcance de HU8). Para ingresar, use uno de los usuarios de prueba anteriores en la pantalla de login.
+
+---
+
+### Cambios recientes relevantes
+- Eliminados usuario y rol `admin_propiedades` de toda la lógica y UI.
+- Modal de credenciales de prueba mejorado: ahora solo muestra los roles válidos y es responsive (no se desborda en mobile).
+- Bug corregido: ahora los campos de Input permiten pegar desde el portapapeles sin restricciones.
+- Dashboard muestra UI condicional según el rol autenticado (`admin`, `comprador`, `vendedor`).
+- Toda la autenticación y lógica de roles está centralizada y documentada.
+
 ## Instalación y ejecución
 ```bash
 npm install
