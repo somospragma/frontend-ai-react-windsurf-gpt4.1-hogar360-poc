@@ -11,10 +11,13 @@ const LoginPage: React.FC = () => {
   const [error, setError] = useState<string | undefined>(undefined);
   const [loading, setLoading] = useState(false);
 
-  if (isAuthenticated) {
-    navigate('/');
-    return null;
-  }
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/', { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
+
+  if (isAuthenticated) return null;
 
   const handleLogin = async (data: { email: string; password: string }) => {
     setLoading(true);
