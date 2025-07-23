@@ -75,6 +75,14 @@ El sistema de autenticación mock soporta los siguientes usuarios de prueba, cad
 
 ---
 
+### Gestión de categorías (HU1 + HU2)
+
+- `/categories`: Vista única para crear (solo admin) y listar categorías (todos los roles autenticados).
+- Listado paginado (5 por página) y filtrable por nombre.
+- El listado se actualiza automáticamente al crear una nueva categoría.
+- Validaciones en tiempo real, feedback visual y UI alineada al diseño de Figma.
+- Responsive: dashboard side-by-side en desktop, stacked en mobile.
+
 ### Cambios recientes relevantes
 - Eliminados usuario y rol `admin_propiedades` de toda la lógica y UI.
 - Modal de credenciales de prueba mejorado: ahora solo muestra los roles válidos y es responsive (no se desborda en mobile).

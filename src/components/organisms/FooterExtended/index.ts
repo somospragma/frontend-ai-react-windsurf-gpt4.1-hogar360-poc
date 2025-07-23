@@ -1,0 +1,1 @@
+export { FooterExtended } from './FooterExtended';
