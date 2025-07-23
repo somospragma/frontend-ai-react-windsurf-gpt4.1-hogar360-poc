@@ -75,6 +75,13 @@ El sistema de autenticación mock soporta los siguientes usuarios de prueba, cad
 
 ---
 
+### Gestión de categorías (HU1)
+
+- Solo el rol admin puede crear nuevas categorías de inmuebles desde `/categories`.
+- Cada categoría requiere nombre único (máx 50) y descripción (máx 90).
+- Validaciones en tiempo real, feedback visual y listado actualizado.
+- UI alineada al diseño de Figma.
+
 ### Cambios recientes relevantes
 - Eliminados usuario y rol `admin_propiedades` de toda la lógica y UI.
 - Modal de credenciales de prueba mejorado: ahora solo muestra los roles válidos y es responsive (no se desborda en mobile).
