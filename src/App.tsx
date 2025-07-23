@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/Login';
 import HomePage from './pages/Home';
 import { ProtectedRoute } from './components/molecules/ProtectedRoute';
+import { CategoriesPage } from './pages/Categories';
 
 const App: React.FC = () => (
   <BrowserRouter>
@@ -13,6 +14,14 @@ const App: React.FC = () => (
         element={
           <ProtectedRoute>
             <HomePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path='/categories'
+        element={
+          <ProtectedRoute>
+            <CategoriesPage />
           </ProtectedRoute>
         }
       />
