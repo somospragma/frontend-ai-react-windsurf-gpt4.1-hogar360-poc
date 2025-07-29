@@ -6,14 +6,17 @@ const menuByRole = {
   admin: [
     { label: 'Dashboard', to: '/' },
     { label: 'Categorías', to: '/categories' },
+    { label: 'Ubicaciones', to: '/locations' },
     // Agrega más accesos según diseño/negocio
   ],
   comprador: [
     { label: 'Dashboard', to: '/' },
+    { label: 'Ubicaciones', to: '/locations' },
     // ...otros accesos para comprador
   ],
   vendedor: [
     { label: 'Dashboard', to: '/' },
+    { label: 'Ubicaciones', to: '/locations' },
     // ...otros accesos para vendedor
   ],
 };

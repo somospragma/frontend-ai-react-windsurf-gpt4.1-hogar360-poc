@@ -77,6 +77,16 @@ El sistema de autenticación mock soporta los siguientes usuarios de prueba, cad
 
 ### Gestión de categorías (HU1 + HU2)
 
+### Gestión de Ubicaciones (HU3)
+
+- `/locations`: Página protegida, solo accesible para usuarios con rol **admin**.
+- Incluye formulario para crear ubicaciones y listado en tiempo real.
+- La opción 'Ubicaciones' aparece en el menú lateral (AsidePanel) solo para el rol admin.
+- Si un usuario no autenticado intenta acceder, será redirigido a `/login`.
+- Si un usuario autenticado sin rol admin intenta acceder, será redirigido a `/`.
+- La protección de rutas se implementa mediante el componente `ProtectedRoute`, que recibe un prop `role` para restringir por rol.
+- El acceso y visibilidad de rutas y menús está centralizado y documentado.
+
 - `/categories`: Vista única para crear (solo admin) y listar categorías (todos los roles autenticados).
 - Listado paginado (5 por página) y filtrable por nombre.
 - El listado se actualiza automáticamente al crear una nueva categoría.
