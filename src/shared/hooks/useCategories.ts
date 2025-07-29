@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { mockCategories, addCategory } from '../mocks/categories';
-import type { Category } from '../mocks/categories';
+import type { Category } from '../interfaces/types.d.ts';
 
 export const useCategories = () => {
   const [categories, setCategories] = useState<Category[]>(mockCategories);
@@ -24,14 +24,18 @@ export const useCategories = () => {
   const paginated = filtered.slice((page - 1) * pageSize, page * pageSize);
 
   const createCategory = (nombre: string, descripcion: string) => {
-    const result = addCategory(nombre, descripcion);
-    if (result.success && result.category) {
+    try {
+      addCategory(nombre, descripcion);
       setSuccess('Categoría creada exitosamente');
       setError(null);
       setPage(1); // vuelve a la primera página para ver el nuevo registro
       // El listado se actualizará automáticamente por el useEffect
-    } else {
-      setError(result.error || 'Error desconocido');
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('Error desconocido');
+      }
       setSuccess(null);
     }
   };
