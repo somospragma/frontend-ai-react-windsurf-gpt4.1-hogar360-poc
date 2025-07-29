@@ -11,10 +11,12 @@ const menuByRole = {
   ],
   comprador: [
     { label: 'Dashboard', to: '/' },
+    { label: 'Ubicaciones', to: '/locations' },
     // ...otros accesos para comprador
   ],
   vendedor: [
     { label: 'Dashboard', to: '/' },
+    { label: 'Ubicaciones', to: '/locations' },
     // ...otros accesos para vendedor
   ],
 };
