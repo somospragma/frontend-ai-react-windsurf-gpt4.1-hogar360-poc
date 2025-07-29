@@ -2,9 +2,17 @@ import React from 'react';
 import { useAuthStore } from '../../../shared/store/useAuth';
 import userAvatar from '../../../assets/images/user-avatar.png';
 
+import { useNavigate } from 'react-router-dom';
+
 export const Header: React.FC = () => {
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login', { replace: true });
+  };
 
   return (
     <header className='w-full h-16 flex items-center justify-between px-6 bg-white shadow z-20'>
@@ -25,7 +33,7 @@ export const Header: React.FC = () => {
             />
             <button
               className='px-3 py-1 rounded bg-blue-600 text-white text-sm hover:bg-blue-700 transition ml-2'
-              onClick={logout}
+              onClick={handleLogout}
             >
               Cerrar sesión
             </button>
