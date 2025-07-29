@@ -6,6 +6,7 @@ import { ProtectedRoute } from './components/molecules/ProtectedRoute';
 import { CategoriesPage } from './pages/Categories';
 import Locations from './pages/Locations';
 import { BasicLayout } from './components/templates/BasicLayout';
+import SellersPage from './pages/Sellers';
 
 const App: React.FC = () => (
   <BrowserRouter>
@@ -34,6 +35,14 @@ const App: React.FC = () => (
       <Route
         path="/locations"
         element={<Locations />}
+      />
+      <Route
+        path="/sellers"
+        element={
+          <ProtectedRoute role="admin">
+            <SellersPage />
+          </ProtectedRoute>
+        }
       />
       <Route path='*' element={<Navigate to='/' replace />} />
     </Routes>

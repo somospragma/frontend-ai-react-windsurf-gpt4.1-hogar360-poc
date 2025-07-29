@@ -7,6 +7,7 @@ const menuByRole = {
     { label: 'Dashboard', to: '/' },
     { label: 'Categorías', to: '/categories' },
     { label: 'Ubicaciones', to: '/locations' },
+    { label: 'Vendedores', to: '/sellers' },
     // Agrega más accesos según diseño/negocio
   ],
   comprador: [

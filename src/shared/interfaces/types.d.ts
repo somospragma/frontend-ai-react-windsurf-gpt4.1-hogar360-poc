@@ -25,3 +25,14 @@ export interface Category {
   nombre: string;
   descripcion: string;
 }
+
+export interface SellerUser {
+  id: string;
+  nombre: string;
+  apellido: string;
+  documento: string;
+  celular: string;
+  fechaNacimiento: string; // ISO date
+  correo: string;
+  claveHash: string; // bcrypt hash
+}
