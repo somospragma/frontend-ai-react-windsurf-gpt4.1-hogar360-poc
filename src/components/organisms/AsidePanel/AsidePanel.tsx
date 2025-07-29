@@ -6,6 +6,7 @@ const menuByRole = {
   admin: [
     { label: 'Dashboard', to: '/' },
     { label: 'Categorías', to: '/categories' },
+    { label: 'Ubicaciones', to: '/locations' },
     // Agrega más accesos según diseño/negocio
   ],
   comprador: [

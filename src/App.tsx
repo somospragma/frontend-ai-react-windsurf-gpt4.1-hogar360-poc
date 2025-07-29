@@ -4,6 +4,7 @@ import LoginPage from './pages/Login';
 import HomePage from './pages/Home';
 import { ProtectedRoute } from './components/molecules/ProtectedRoute';
 import { CategoriesPage } from './pages/Categories';
+import Locations from './pages/Locations';
 import { BasicLayout } from './components/templates/BasicLayout';
 
 const App: React.FC = () => (
@@ -29,6 +30,10 @@ const App: React.FC = () => (
             </BasicLayout>
           </ProtectedRoute>
         }
+      />
+      <Route
+        path="/locations"
+        element={<Locations />}
       />
       <Route path='*' element={<Navigate to='/' replace />} />
     </Routes>
