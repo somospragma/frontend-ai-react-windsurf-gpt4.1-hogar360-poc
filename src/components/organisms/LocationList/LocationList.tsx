@@ -57,8 +57,9 @@ export const LocationList: React.FC = () => {
           </select>
         </div>
         <div>
-          <label className='block text-gray-700 text-sm mb-1'>Por página</label>
+          <label htmlFor='pageSize' className='block text-gray-700 text-sm mb-1'>Por página</label>
           <select
+            id='pageSize'
             className='border rounded px-2 py-1'
             value={pageSize}
             onChange={e => { setPageSize(Number(e.target.value)); setPage(1); }}
