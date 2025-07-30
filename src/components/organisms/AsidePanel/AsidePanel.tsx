@@ -18,6 +18,7 @@ const menuByRole = {
   vendedor: [
     { label: 'Dashboard', to: '/' },
     { label: 'Ubicaciones', to: '/locations' },
+    { label: 'Publicar casa', to: '/publish-house' },
     // ...otros accesos para vendedor
   ],
 };
