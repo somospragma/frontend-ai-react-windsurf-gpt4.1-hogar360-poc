@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import PublishHouse from './pages/PublishHouse';
 import LoginPage from './pages/Login';
 import HomePage from './pages/Home';
 import { ProtectedRoute } from './components/molecules/ProtectedRoute';
@@ -41,6 +42,16 @@ const App: React.FC = () => (
         element={
           <ProtectedRoute role="admin">
             <SellersPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/publish-house"
+        element={
+          <ProtectedRoute role="vendedor">
+            <BasicLayout>
+              <PublishHouse />
+            </BasicLayout>
           </ProtectedRoute>
         }
       />
