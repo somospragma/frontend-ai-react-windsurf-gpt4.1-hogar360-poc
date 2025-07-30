@@ -36,3 +36,20 @@ export interface SellerUser {
   correo: string;
   claveHash: string; // bcrypt hash
 }
+
+export type HouseStatus = 'PUBLICADA' | 'PUBLICACION_PAUSADA' | 'TRASACCION_CURSO' | 'TRASACCION_FINALIZADA';
+
+export interface House {
+  id: string;
+  nombre: string;
+  descripcion: string;
+  categoria: Category;
+  cuartos: number;
+  banos: number;
+  precio: number;
+  ubicacion: Location;
+  fechaPublicacion: string; // ISO date
+  estado: HouseStatus;
+  imagenUrl?: string;
+  vendedorId: string;
+}
