@@ -66,3 +66,8 @@ export interface VisitSlot {
   startDateTime: string; // ISO 8601
   endDateTime: string;   // ISO 8601
 }
+
+export interface VisitSlotAgenda {
+  horarioId: string;
+  compradorEmail: string;
+}

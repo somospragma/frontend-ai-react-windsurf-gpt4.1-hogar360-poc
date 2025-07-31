@@ -1,15 +1,20 @@
-# React + TypeScript + Vite
+# Hogar360 Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend profesional para la gestión inmobiliaria, desarrollado con **React + TypeScript + Vite**, siguiendo Atomic Design, Clean Code, accesibilidad y buenas prácticas de DX.
 
-## Stack Tecnológico
-- Vite 5
-- React 18 + TypeScript
-- Tailwind CSS (plugin oficial para Vite)
-- Zustand (global state)
-- react-router-dom (ruteo)
-- react-hook-form + zod (formularios y validación)
-- Font Awesome (iconografía)
+## 🛠️ Stack Tecnológico real
+- Vite ^7.0.4
+- React ^19.1.0 + TypeScript ~5.8.3
+- Tailwind CSS ^4.1.11 (y @tailwindcss/vite)
+- Zustand ^5.0.6 (global state)
+- react-router-dom ^7.7.0 (ruteo)
+- react-hook-form ^7.60.0 + zod ^4.0.5 (formularios y validación)
+- Font Awesome (core, solid, brands, react)
+- @hookform/resolvers ^5.1.1
+- bcryptjs ^3.0.2 (mock hashing)
+- uuid ^11.1.0 (IDs)
+
+> Consulta siempre `package.json` para dependencias y versiones actualizadas.
 
 ## Estructura de Carpetas (LIFT + Atomic Design)
 ```
@@ -40,7 +45,7 @@ src/
 └── main.tsx
 ```
 
-## Flujo de trabajo Gitflow (manual)
+## Flujo de trabajo Gitflow (actualizado)
 - `main`: rama principal, solo para releases estables.
 - `develop`: rama base para integración de nuevas features.
 - `feature/*`: para nuevas funcionalidades.
@@ -73,11 +78,17 @@ El sistema de autenticación mock soporta los siguientes usuarios de prueba, cad
 
 **Nota:** El registro de usuarios no está implementado (fuera del alcance de HU8). Para ingresar, use uno de los usuarios de prueba anteriores en la pantalla de login.
 
----
+### Funcionalidades principales
 
-### Gestión de categorías (HU1 + HU2)
+#### Gestión de categorías (HU1 + HU2)
 
-### Gestión de Ubicaciones (HU3)
+- `/categories`: Vista única para crear (solo admin) y listar categorías (todos los roles autenticados).
+- Listado paginado (5 por página) y filtrable por nombre.
+- El listado se actualiza automáticamente al crear una nueva categoría.
+- Validaciones en tiempo real, feedback visual y UI alineada al diseño de Figma.
+- Responsive: dashboard side-by-side en desktop, stacked en mobile.
+
+#### Gestión de ubicaciones (HU3)
 
 - `/locations`: Página protegida, solo accesible para usuarios con rol **admin**.
 - Incluye formulario para crear ubicaciones y listado en tiempo real.
@@ -87,31 +98,42 @@ El sistema de autenticación mock soporta los siguientes usuarios de prueba, cad
 - La protección de rutas se implementa mediante el componente `ProtectedRoute`, que recibe un prop `role` para restringir por rol.
 - El acceso y visibilidad de rutas y menús está centralizado y documentado.
 
-- `/categories`: Vista única para crear (solo admin) y listar categorías (todos los roles autenticados).
+#### Gestión de casas y visitas/agendas
+
+- `/houses`: Página para listar y crear casas (todos los roles autenticados).
+- `/visits`: Página para listar y crear visitas/agendas (todos los roles autenticados).
 - Listado paginado (5 por página) y filtrable por nombre.
-- El listado se actualiza automáticamente al crear una nueva categoría.
+- El listado se actualiza automáticamente al crear una nueva casa o visita/agenda.
 - Validaciones en tiempo real, feedback visual y UI alineada al diseño de Figma.
 - Responsive: dashboard side-by-side en desktop, stacked en mobile.
 
-### Cambios recientes relevantes
-- Eliminados usuario y rol `admin_propiedades` de toda la lógica y UI.
-- Modal de credenciales de prueba mejorado: ahora solo muestra los roles válidos y es responsive (no se desborda en mobile).
-- Bug corregido: ahora los campos de Input permiten pegar desde el portapapeles sin restricciones.
-- Dashboard muestra UI condicional según el rol autenticado (`admin`, `comprador`, `vendedor`).
-- Toda la autenticación y lógica de roles está centralizada y documentada.
+### Convenciones y buenas prácticas del código
 
-## Instalación y ejecución
+- Se sigue el patrón de diseño Atomic Design para la estructura de componentes.
+- Se utiliza Tailwind CSS para estilos y layout.
+- Se utiliza TypeScript para tipado estático y seguridad.
+- Se utiliza ESLint para linting y formateo de código.
+- Se utiliza Prettier para formateo de código.
+
+### Instalación y comandos útiles
+
 ```bash
 npm install
 npm run dev
 ```
 
-## Referencias
+### Referencias y enlaces claros
+
 - [Figma Sistema de Diseño](https://www.figma.com/design/598hfN0nUaRfziiFQ3kOXM/Reto-Hogar360?node-id=0-1&p=f&t=kvsjhB18VLkd8V75-0)
 - [Reglas globales del proyecto](./Contexto/project-rules-react.md)
 - [User Stories y mínimos](./Contexto/HUs.csv, ./Contexto/minimos_dev.csv)
 
----
+### Notas relevantes para onboarding y mantenimiento
+
+- El proyecto utiliza Gitflow para el flujo de trabajo.
+- Se recomienda revisar el README y la documentación del proyecto antes de empezar a trabajar.
+- Se recomienda utilizar los comandos `npm install` y `npm run dev` para instalar y ejecutar el proyecto.
+- Se recomienda revisar las referencias y enlaces claros para obtener más información sobre el proyecto.
 
 ## Expanding the ESLint configuration
 
