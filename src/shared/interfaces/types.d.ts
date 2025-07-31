@@ -55,6 +55,11 @@ export interface House {
 }
 
 export interface VisitSlot {
+  /**
+   * Cantidad de compradores agendados para este horario (mock/real).
+   * HU10: Se usa para filtrar slots disponibles (<2).
+   */
+  agendados?: number;
   id?: string; // Opcional, para gestión local o mocks
   vendedorId: string;
   casaId: string;
