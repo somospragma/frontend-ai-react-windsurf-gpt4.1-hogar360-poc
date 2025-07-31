@@ -45,6 +45,8 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
+import { useAuthStore } from '../../../shared/store/useAuth';
+
 export const HouseForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
   const addHouse = useHousesStore((s) => s.addHouse);
   const [success, setSuccess] = useState<string | null>(null);
@@ -66,11 +68,13 @@ export const HouseForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) =
   const [ubicacion, setUbicacion] = useState<Location | null>(null);
   const [ubicacionInput, setUbicacionInput] = useState<string>('');
 
+  const user = useAuthStore((s) => s.user);
+
   const onSubmit = (data: FormData) => {
     setError(null);
     setSuccess(null);
     // NOTA: vendedorId debe venir del usuario autenticado
-    const res = addHouse({ ...data, vendedorId: 'vendedor-demo' });
+    const res = addHouse({ ...data, vendedorId: user?.email ?? 'mock-vendedor@email.com' });
     if (res.ok) {
       setSuccess('Casa publicada correctamente.');
       reset();
