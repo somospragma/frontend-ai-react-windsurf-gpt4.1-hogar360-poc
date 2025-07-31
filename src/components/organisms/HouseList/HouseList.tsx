@@ -5,13 +5,32 @@ interface HouseListProps {
   houses: House[];
 }
 
+import { HouseVisitSlotsModal } from '../HouseVisitSlotsModal';
+
 export const HouseList: React.FC<HouseListProps> = ({ houses }) => {
+  const [modalHouse, setModalHouse] = React.useState<House | null>(null);
+
   if (houses.length === 0) {
     return <div className='text-gray-500 text-center py-8'>No hay casas publicadas.</div>;
   }
 
+  // Cargar horarios disponibles de localStorage al abrir modal
+  const handleOpenModal = (house: House) => {
+
+    setModalHouse(house);
+  };
+
+  const handleCloseModal = () => setModalHouse(null);
+
   return (
-    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+    <>
+      {modalHouse && (
+        <HouseVisitSlotsModal
+          house={modalHouse}
+          onClose={handleCloseModal}
+        />
+      )}
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
       {houses.map((house) => {
         // Validación defensiva para mocks corruptos
         if (!house?.categoria || !house?.ubicacion?.ciudad || !house?.ubicacion?.departamento) {
@@ -52,10 +71,17 @@ export const HouseList: React.FC<HouseListProps> = ({ houses }) => {
                 <span>🛁 {house.banos}</span>
               </div>
               <div className='text-xs text-gray-500 flex-1 line-clamp-2'>{house.descripcion}</div>
+              <button
+                className='mt-4 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition font-semibold'
+                onClick={() => handleOpenModal(house)}
+              >
+                Visualizar Horarios
+              </button>
             </div>
           </div>
         );
       })}
     </div>
+    </>
   );
 };
