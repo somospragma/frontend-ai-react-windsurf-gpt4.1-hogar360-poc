@@ -53,3 +53,11 @@ export interface House {
   imagenUrl?: string;
   vendedorId: string;
 }
+
+export interface VisitSlot {
+  id?: string; // Opcional, para gestión local o mocks
+  vendedorId: string;
+  casaId: string;
+  startDateTime: string; // ISO 8601
+  endDateTime: string;   // ISO 8601
+}

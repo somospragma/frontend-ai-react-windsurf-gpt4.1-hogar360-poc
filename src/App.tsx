@@ -8,6 +8,7 @@ import { CategoriesPage } from './pages/Categories';
 import Locations from './pages/Locations';
 import { BasicLayout } from './components/templates/BasicLayout';
 import SellersPage from './pages/Sellers';
+import VisitSlotsPage from './pages/VisitSlots';
 
 const App: React.FC = () => (
   <BrowserRouter>
@@ -51,6 +52,16 @@ const App: React.FC = () => (
           <ProtectedRoute role="vendedor">
             <BasicLayout>
               <PublishHouse />
+            </BasicLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/visit-slots"
+        element={
+          <ProtectedRoute role="vendedor">
+            <BasicLayout>
+              <VisitSlotsPage />
             </BasicLayout>
           </ProtectedRoute>
         }

@@ -19,6 +19,7 @@ const menuByRole = {
     { label: 'Dashboard', to: '/' },
     { label: 'Ubicaciones', to: '/locations' },
     { label: 'Publicar casa', to: '/publish-house' },
+    { label: 'Horarios de visita', to: '/visit-slots' },
     // ...otros accesos para vendedor
   ],
 };
