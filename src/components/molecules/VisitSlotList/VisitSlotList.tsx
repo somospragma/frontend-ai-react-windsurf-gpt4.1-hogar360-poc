@@ -7,26 +7,13 @@ interface VisitSlotListProps {
   onDelete?: (slotId: string) => void;
 }
 
+import { getHouseName, formatDateTime } from '../../../shared/helpers/visitSlotHelpers';
+
 export const VisitSlotList: React.FC<VisitSlotListProps> = ({
   slots,
   houses,
   onDelete,
 }) => {
-  const getHouseName = (casaId: string): string => {
-    const house = houses.find(h => h.id === casaId);
-    return house ? `${house.nombre} - ${house.ubicacion.ciudad.nombre}` : 'Casa no encontrada';
-  };
-
-  const formatDateTime = (dateTimeString: string): string => {
-    const date = new Date(dateTimeString);
-    return date.toLocaleString('es-CO', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  };
 
   const getDuration = (startDateTime: string, endDateTime: string): string => {
     const start = new Date(startDateTime);
@@ -82,7 +69,7 @@ export const VisitSlotList: React.FC<VisitSlotListProps> = ({
             <div className='flex justify-between items-start'>
               <div className='flex-1'>
                 <h4 className='font-semibold text-gray-800 mb-2'>
-                  {getHouseName(slot.casaId)}
+                  {getHouseName(houses,slot.casaId)}
                 </h4>
                 
                 <div className='grid grid-cols-1 md:grid-cols-3 gap-2 text-sm text-gray-600'>

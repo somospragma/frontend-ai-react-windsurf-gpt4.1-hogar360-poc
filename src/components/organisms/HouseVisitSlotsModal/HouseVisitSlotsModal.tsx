@@ -1,6 +1,9 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import type { House, VisitSlot } from '../../../shared/interfaces/types';
 import { getMockVisitSlots } from '../../../shared/mocks/visitSlots.mock';
+import { countAgendasForSlot, isUserAgended, addVisitSlotAgenda } from '../../../shared/mocks/visitSlotAgendas.mock';
+import { Toast } from '../../atoms/Toast';
+import { useAuthStore } from '../../../shared/store/useAuth';
 
 interface HouseVisitSlotsModalProps {
   house: House;
@@ -10,10 +13,17 @@ interface HouseVisitSlotsModalProps {
 export const HouseVisitSlotsModal: React.FC<HouseVisitSlotsModalProps> = ({ house, onClose }) => {
   // Filtros locales para HU10
   const [dateRange, setDateRange] = useState<{ start: string; end: string }>({ start: '', end: '' });
-
   // Estado para paginación
   const [page, setPage] = useState<number>(1);
   const pageSize = 3;
+  // Estado global para Toast
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
+  // Forzar refresh tras agendar
+  const [refresh, setRefresh] = useState(0);
+  // Usuario autenticado
+  const user = useAuthStore(state => state.user);
+  const isBuyer = user?.role === 'comprador';
+  const userEmail = user?.email;
 
   // Solo horarios de esta casa, futuros, con menos de 2 agendados, y que no sean pasados con 2 agendados
   const filteredSlots = useMemo(() => {
@@ -51,7 +61,7 @@ export const HouseVisitSlotsModal: React.FC<HouseVisitSlotsModalProps> = ({ hous
     });
     // 6. Ordenar descendente por fecha/hora de inicio
     return disponibles.sort((a, b) => new Date(b.startDateTime).getTime() - new Date(a.startDateTime).getTime());
-  }, [house.id, dateRange]);
+  }, [house.id, dateRange, refresh]);
 
   useEffect(() => {
     // Bloquear scroll al abrir modal
@@ -135,36 +145,97 @@ export const HouseVisitSlotsModal: React.FC<HouseVisitSlotsModalProps> = ({ hous
               const isUpcoming = (startDateTime: string): boolean => new Date(startDateTime) > new Date();
               return (
                 <div className='space-y-4'>
-                  {filteredSlots.slice((page - 1) * pageSize, page * pageSize).map(slot => (
-                    <div
-                      key={slot.id || slot.startDateTime}
-                      className='border rounded-lg p-4 border-green-200 bg-green-50'
-                    >
-                      <div className='flex justify-between items-start'>
-                        <div className='flex-1'>
-                          <div className='grid grid-cols-1 md:grid-cols-3 gap-2 text-sm text-gray-600'>
-                            <div>
-                              <span className='font-medium'>Inicio:</span><br />
-                              {formatDateTime(slot.startDateTime)}
-                            </div>
-                            <div>
-                              <span className='font-medium'>Fin:</span><br />
-                              {formatDateTime(slot.endDateTime)}
-                            </div>
-                            <div>
-                              <span className='font-medium'>Duración:</span><br />
-                              {getDuration(slot.startDateTime, slot.endDateTime)}
-                            </div>
-                          </div>
-                          {isUpcoming(slot.startDateTime) && (
-                            <div className='mt-2'>
-                              <span className='inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800'>Próximo</span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+                  {filteredSlots.slice((page - 1) * pageSize, page * pageSize).map(slot => {
+  const slotId = slot.id || slot.startDateTime;
+  // Sumar agendados mock + reales
+  const agendasReal = countAgendasForSlot(slotId);
+  const agendadosTotales = (slot.agendados ?? 0) + agendasReal;
+  const isFull = agendadosTotales >= 2;
+  // Solo renderizar y permitir agendar si userEmail existe
+  const safeUserEmail = userEmail ?? '';
+  const yaAgendado = safeUserEmail ? isUserAgended(slotId, safeUserEmail) : false;
+
+  const handleAgendar = () => {
+    if (!user || !isBuyer) {
+      setToast({ message: 'Debes iniciar sesión como comprador para agendar.', type: 'error' });
+      return;
+    }
+    if (!safeUserEmail) {
+      setToast({ message: 'No se detectó un email válido para el usuario.', type: 'error' });
+      return;
+    }
+    if (isFull) {
+      setToast({ message: 'Este horario ya está lleno.', type: 'error' });
+      return;
+    }
+    if (yaAgendado) {
+      setToast({ message: 'Ya tienes una agenda para este horario.', type: 'info' });
+      return;
+    }
+    const ok = addVisitSlotAgenda({ horarioId: slotId, compradorEmail: safeUserEmail });
+    if (ok) {
+      setToast({ message: '¡Agenda realizada con éxito!', type: 'success' });
+      setRefresh(r => r + 1); // Forzar refresh de UI
+    } else {
+      setToast({ message: 'No se pudo agendar. Intenta de nuevo.', type: 'error' });
+    }
+  };
+
+  // Extraer texto del botón a variable
+  let agendarBtnText = 'Agendar';
+  if (isFull) agendarBtnText = 'Lleno';
+  else if (yaAgendado) agendarBtnText = 'Agendado';
+
+  return (
+    <div
+      key={slotId}
+      className='border rounded-lg p-4 border-green-200 bg-green-50'
+    >
+      <div className='flex justify-between items-start'>
+        <div className='flex-1'>
+          <div className='grid grid-cols-1 md:grid-cols-3 gap-2 text-sm text-gray-600'>
+            <div>
+              <span className='font-medium'>Inicio:</span><br />
+              {formatDateTime(slot.startDateTime)}
+            </div>
+            <div>
+              <span className='font-medium'>Fin:</span><br />
+              {formatDateTime(slot.endDateTime)}
+            </div>
+            <div>
+              <span className='font-medium'>Duración:</span><br />
+              {getDuration(slot.startDateTime, slot.endDateTime)}
+            </div>
+          </div>
+          {isUpcoming(slot.startDateTime) && (
+            <div className='mt-2'>
+              <span className='inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800'>Próximo</span>
+            </div>
+          )}
+        </div>
+        {isBuyer && safeUserEmail && (
+          <div className='ml-4 flex flex-col items-end'>
+            <button
+              className={`mt-2 px-4 py-1 rounded bg-blue-600 text-white font-semibold text-sm shadow disabled:opacity-60 disabled:cursor-not-allowed`}
+              disabled={isFull || yaAgendado}
+              onClick={handleAgendar}
+            >
+              {agendarBtnText}
+            </button>
+            <div className='text-xs mt-1 text-gray-500'>Agendados: {agendadosTotales}/2</div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+})}
+{toast && (
+  <Toast
+    message={toast.message}
+    type={toast.type}
+    onClose={() => setToast(null)}
+  />
+)}
                 </div>
               );
             })()}

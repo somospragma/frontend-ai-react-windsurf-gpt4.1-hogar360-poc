@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Category } from '../../../shared/mocks/categories';
+import type { Category } from '../../../shared/interfaces/types.d.ts';
 
 interface CategoryListProps {
   categories: Category[];
