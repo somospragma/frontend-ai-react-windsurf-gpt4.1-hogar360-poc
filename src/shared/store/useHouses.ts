@@ -4,6 +4,11 @@ import { persist } from 'zustand/middleware';
 import { v4 as uuidv4 } from 'uuid';
 import { mockHouses } from '../mocks/houses';
 
+// Importa imágenes para resolver URLs correctas en producción con Vite
+import casa1 from '../../assets/images/casa1.png';
+import casa2 from '../../assets/images/casa2.png';
+import casa3 from '../../assets/images/casa3.png';
+
 interface HousesState {
   houses: House[];
   addHouse: (house: Omit<House, 'id' | 'estado' | 'fechaPublicacion'> & { fechaPublicacion: string }) => { ok: boolean; error?: string };
@@ -40,8 +45,8 @@ export const useHousesStore = create<HousesState>()(
         if (diffMes > 1) {
           return { ok: false, error: 'La fecha de publicación no puede exceder un mes desde hoy' };
         }
-        // Asignar imagen mock aleatoria
-        const mockImages = ['/src/assets/images/casa1.png', '/src/assets/images/casa2.png', '/src/assets/images/casa3.png'];
+        // Asignar imagen mock aleatoria (usar imports para producción)
+        const mockImages = [casa1, casa2, casa3];
         const imagenUrlAleatoria = mockImages[Math.floor(Math.random() * mockImages.length)];
         const newHouse: House = {
           id: uuidv4(),
@@ -74,6 +79,29 @@ export const useHousesStore = create<HousesState>()(
       },
       getHouseById: (id) => get().houses.find((c) => c.id === id),
     }),
-    { name: 'hogar360_houses' }
+    {
+      name: 'hogar360_houses',
+      version: 2,
+      // Migra estados persistidos que contenían rutas /src/assets/... a URLs resueltas
+      migrate: (persistedState: unknown, version: number) => {
+        void version; // evitar lint: 'version' sin uso
+        const state = persistedState as Partial<HousesState> | undefined;
+        if (!state || !Array.isArray(state.houses)) return persistedState as HousesState;
+        const mapSrcToImport = (url?: string): string | undefined => {
+          if (!url) return url;
+          if (url.includes('/src/assets/images/casa1.png')) return casa1;
+          if (url.includes('/src/assets/images/casa2.png')) return casa2;
+          if (url.includes('/src/assets/images/casa3.png')) return casa3;
+          return url;
+        };
+        return {
+          ...state,
+          houses: state.houses.map((h: House) => ({
+            ...h,
+            imagenUrl: mapSrcToImport(h.imagenUrl),
+          })),
+        } as HousesState;
+      },
+    }
   )
 );

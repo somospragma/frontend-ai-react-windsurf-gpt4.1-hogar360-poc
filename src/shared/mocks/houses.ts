@@ -3,8 +3,13 @@ import { mockCiudades } from './ciudades';
 import { mockDepartamentos } from './departamentos';
 import { mockCategories } from './categories';
 
+// Importa imágenes para que Vite resuelva URLs correctas en producción
+import casa1 from '../../assets/images/casa1.png';
+import casa2 from '../../assets/images/casa2.png';
+import casa3 from '../../assets/images/casa3.png';
+
 // Asume que el primer departamento/ciudad/categoría existen
-export const mockHouses: House[] = [
+const mockHousesBase: House[] = [
   {
     id: '1',
     nombre: 'Casa Moderna en Medellín',
@@ -258,3 +263,15 @@ export const mockHouses: House[] = [
     vendedorId: 'vendedor-3',
   },
 ];
+
+// Mapea rutas antiguas de /src/assets/... a las URLs resueltas por Vite
+const imageMap: Record<string, string> = {
+  '/src/assets/images/casa1.png': casa1,
+  '/src/assets/images/casa2.png': casa2,
+  '/src/assets/images/casa3.png': casa3,
+};
+
+export const mockHouses: House[] = mockHousesBase.map((h) => ({
+  ...h,
+  imagenUrl: h.imagenUrl ? imageMap[h.imagenUrl] ?? h.imagenUrl : undefined,
+}));
